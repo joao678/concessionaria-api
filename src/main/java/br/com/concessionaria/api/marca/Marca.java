@@ -33,6 +33,14 @@ public class Marca {
     
     @OneToOne(mappedBy = "marca")
     private Carro carro;
+
+    public Carro getCarro() {
+        return carro;
+    }
+
+    public void setCarro(Carro carro) {
+        this.carro = carro;
+    }
     
     public Long getId() {
         return id;

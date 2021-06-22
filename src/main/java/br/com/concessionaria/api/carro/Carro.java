@@ -41,9 +41,17 @@ public class Carro {
     private int preco;
     private String imagem;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
-    //@JoinColumn(name = "marca_id", referencedColumnName = "id", unique = false, insertable = false, updatable = false)
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @JoinColumn(name = "marca_id", referencedColumnName = "id", unique = false, insertable = true, updatable = true)
     private Marca marca;
+
+    public Marca getMarca() {
+        return marca;
+    }
+
+    public void setMarca(Marca marca) {
+        this.marca = marca;
+    }
     
     /*@ManyToMany
     @JoinTable(
@@ -63,14 +71,6 @@ public class Carro {
 
     public void setImagem(String imagem) {
         this.imagem = imagem;
-    }
-    
-    public Marca getMarca() {
-        return marca;
-    }
-
-    public void setMarca(Marca marca) {
-        this.marca = marca;
     }
 
     public int getAno() {

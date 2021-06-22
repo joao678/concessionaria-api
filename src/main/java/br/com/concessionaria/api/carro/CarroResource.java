@@ -37,7 +37,8 @@ public class CarroResource {
     @GET
     @Path("{id}")
     public Carro getCarro(@PathParam("id") Long id) {
-        return entityManager.find(Carro.class, id);
+        Carro carro = entityManager.find(Carro.class, id);
+        return carro;
     }
     
     @POST
