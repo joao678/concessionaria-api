@@ -31,17 +31,6 @@ public class Marca {
     private String nome;
     private String pais;
     
-    @OneToOne(mappedBy = "marca")
-    private Carro carro;
-
-    public Carro getCarro() {
-        return carro;
-    }
-
-    public void setCarro(Carro carro) {
-        this.carro = carro;
-    }
-    
     public Long getId() {
         return id;
     }

@@ -60,6 +60,6 @@ public class MarcaResource {
     
     @GET
     public List<Marca> getMarcas() {
-       return entityManager.createQuery("SELECT l FROM Marca l", Marca.class).getResultList();
+       return entityManager.createQuery("SELECT m FROM Marca m", Marca.class).getResultList();
     }
 }

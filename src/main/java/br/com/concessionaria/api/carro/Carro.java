@@ -7,11 +7,13 @@ package br.com.concessionaria.api.carro;
 
 import br.com.concessionaria.api.formaPagto.FormaPagto;
 import br.com.concessionaria.api.marca.Marca;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -23,6 +25,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.OrderColumn;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  *
@@ -40,9 +43,8 @@ public class Carro {
     private int ano;
     private int preco;
     private String imagem;
-
+    
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
-    @JoinColumn(name = "marca_id", referencedColumnName = "id", unique = false, insertable = true, updatable = true)
     private Marca marca;
 
     public Marca getMarca() {
@@ -53,17 +55,23 @@ public class Carro {
         this.marca = marca;
     }
     
-    /*@ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-        name = "forma_pagto_carro",
-        joinColumns = @JoinColumn(name = "carro_id"),
-        inverseJoinColumns = @JoinColumn(name = "forma_pagto_id")
+        name = "forma_carros",
+        joinColumns = @JoinColumn(name = "id_carro"),
+        inverseJoinColumns = @JoinColumn(name = "id_forma"),
+        foreignKey = @ForeignKey(name = "fk_carro"),
+        inverseForeignKey = @ForeignKey(name = "fk_forma")
     )
-    private List<FormaPagto> formaPagto;
+    private List<FormaPagto> formaPagto = new ArrayList<>();
 
     public List<FormaPagto> getFormaPagto() {
         return formaPagto;
-    }*/
+    }
+
+    public void setFormaPagto(List<FormaPagto> formaPagto) {
+        this.formaPagto = formaPagto;
+    }
 
     public String getImagem() {
         return imagem;

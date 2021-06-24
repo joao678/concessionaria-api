@@ -6,12 +6,17 @@
 package br.com.concessionaria.api.carro;
 
 import br.com.concessionaria.api.carro.Carro;
+import br.com.concessionaria.api.formaPagto.FormaPagto;
 import br.com.concessionaria.api.marca.Marca;
 import br.com.concessionaria.api.marca.MarcaResource;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
+import javax.json.JsonObject;
+import javax.json.JsonReader;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -21,6 +26,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 /**
  *
@@ -36,9 +42,13 @@ public class CarroResource {
     
     @GET
     @Path("{id}")
-    public Carro getCarro(@PathParam("id") Long id) {
+    public CarroDTO getCarro(@PathParam("id") Long id) {
         Carro carro = entityManager.find(Carro.class, id);
-        return carro;
+        List<Long> formaIds = new ArrayList<Long>();
+        carro.getFormaPagto().forEach((forma) -> {
+            formaIds.add(forma.getId());
+        });
+        return new CarroDTO(carro.getId(), carro.getModelo(), carro.getImagem(), carro.getAno(), carro.getPreco(), carro.getMarca().getId(), formaIds);
     }
     
     @POST
@@ -51,6 +61,8 @@ public class CarroResource {
     @Path("{id}")
     public Carro updateCarro(@PathParam("id") Long id, Carro carro) {
        carro.setId(id);
+       Marca marca = entityManager.find(Marca.class, carro.getMarca().getId());
+       carro.setMarca(marca);
        entityManager.merge(carro);
        return carro;
     }
@@ -58,11 +70,21 @@ public class CarroResource {
     @DELETE    
     @Path("{id}")
     public void removeCarro(@PathParam("id") Long id) {
-        entityManager.remove(getCarro(id));
+        entityManager.remove(entityManager.find(Carro.class,id));
     }
     
     @GET
-    public List<Carro> getCarros() {
-       return entityManager.createQuery("SELECT l FROM Carro l", Carro.class).getResultList();
+    public List<CarroDTO> getCarros() {
+        List<Carro> listaCarros = entityManager.createQuery("SELECT c FROM Carro c", Carro.class).getResultList();
+        List<CarroDTO> listaCarroDTO = new ArrayList<>();
+        
+        listaCarros.forEach((carro) -> {
+            List<Long> formaIds = new ArrayList<>();
+            carro.getFormaPagto().forEach((forma) -> {
+                formaIds.add(forma.getId());
+            });
+            listaCarroDTO.add(new CarroDTO(carro.getId(), carro.getModelo(), carro.getImagem(), carro.getAno(), carro.getPreco(), carro.getMarca().getId(), formaIds));
+        });
+        return listaCarroDTO;
     }
 }
