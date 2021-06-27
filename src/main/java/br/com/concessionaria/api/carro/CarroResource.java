@@ -1,6 +1,5 @@
 package br.com.concessionaria.api.carro;
 
-import br.com.concessionaria.api.carro.Carro;
 import br.com.concessionaria.api.marca.Marca;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,19 +29,20 @@ public class CarroResource {
     @Path("{id}")
     public CarroDTO getCarro(@PathParam("id") Long id) {
         Carro carro = entityManager.find(Carro.class, id);
+        
         List<Long> formaIds = new ArrayList<Long>();
         carro.getFormaPagto().forEach((forma) -> {
             formaIds.add(forma.getId());
         });
 
         List<Long> condIds = new ArrayList<Long>();
-        carro.getCondPagto().forEach((forma) -> {
-            formaIds.add(forma.getId());
+        carro.getCondPagto().forEach((cond) -> {
+            formaIds.add(cond.getId());
         });
 
         List<Long> acessorioIds = new ArrayList<Long>();
-        carro.getAcessorio().forEach((forma) -> {
-            formaIds.add(forma.getId());
+        carro.getAcessorio().forEach((acessorio) -> {
+            formaIds.add(acessorio.getId());
         });
 
         return new CarroDTO(carro.getId(), carro.getModelo(), carro.getImagem(),
@@ -78,19 +78,20 @@ public class CarroResource {
         List<CarroDTO> listaCarroDTO = new ArrayList<>();
 
         listaCarros.forEach((carro) -> {
+            
             List<Long> formaIds = new ArrayList<>();
             carro.getFormaPagto().forEach((forma) -> {
                 formaIds.add(forma.getId());
             });
 
-            List<Long> condIds = new ArrayList<Long>();
-            carro.getCondPagto().forEach((forma) -> {
-                formaIds.add(forma.getId());
+            List<Long> condIds = new ArrayList<>();
+            carro.getCondPagto().forEach((cond) -> {
+                condIds.add(cond.getId());
             });
 
-            List<Long> acessorioIds = new ArrayList<Long>();
-            carro.getAcessorio().forEach((forma) -> {
-                formaIds.add(forma.getId());
+            List<Long> acessorioIds = new ArrayList<>();
+            carro.getAcessorio().forEach((acessorio) -> {
+                acessorioIds.add(acessorio.getId());
             });
 
             listaCarroDTO.add(new CarroDTO(carro.getId(), carro.getModelo(), carro.getImagem(),
