@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.com.concessionaria.api.marca;
 
 import br.com.concessionaria.api.marca.Marca;
@@ -20,46 +15,43 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-/**
- *
- * @author joao6
- */
 @Path("marcas")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 @Stateless
 public class MarcaResource {
+
     @PersistenceContext(unitName = "ConsessionariaPU")
-    private EntityManager entityManager; 
-    
+    private EntityManager entityManager;
+
     @GET
     @Path("{id}")
     public Marca getMarca(@PathParam("id") Long id) {
         return entityManager.find(Marca.class, id);
     }
-    
+
     @POST
     public Marca addMarca(Marca marca) {
         entityManager.persist(marca);
         return marca;
     }
-    
+
     @PUT
     @Path("{id}")
     public Marca updateMarca(@PathParam("id") Long id, Marca marca) {
-       marca.setId(id);
-       entityManager.merge(marca);
-       return marca;
+        marca.setId(id);
+        entityManager.merge(marca);
+        return marca;
     }
-    
-    @DELETE    
+
+    @DELETE
     @Path("{id}")
     public void removeMarca(@PathParam("id") Long id) {
         entityManager.remove(getMarca(id));
     }
-    
+
     @GET
     public List<Marca> getMarcas() {
-       return entityManager.createQuery("SELECT m FROM Marca m", Marca.class).getResultList();
+        return entityManager.createQuery("SELECT m FROM Marca m", Marca.class).getResultList();
     }
 }
