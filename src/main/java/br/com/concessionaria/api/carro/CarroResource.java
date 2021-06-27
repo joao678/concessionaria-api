@@ -78,19 +78,20 @@ public class CarroResource {
         List<CarroDTO> listaCarroDTO = new ArrayList<>();
 
         listaCarros.forEach((carro) -> {
+            
             List<Long> formaIds = new ArrayList<>();
             carro.getFormaPagto().forEach((forma) -> {
                 formaIds.add(forma.getId());
             });
 
-            List<Long> condIds = new ArrayList<Long>();
+            List<Long> condIds = new ArrayList<>();
             carro.getCondPagto().forEach((cond) -> {
-                formaIds.add(cond.getId());
+                condIds.add(cond.getId());
             });
 
-            List<Long> acessorioIds = new ArrayList<Long>();
+            List<Long> acessorioIds = new ArrayList<>();
             carro.getAcessorio().forEach((acessorio) -> {
-                formaIds.add(acessorio.getId());
+                acessorioIds.add(acessorio.getId());
             });
 
             listaCarroDTO.add(new CarroDTO(carro.getId(), carro.getModelo(), carro.getImagem(),
