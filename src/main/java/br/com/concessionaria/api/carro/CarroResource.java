@@ -37,12 +37,12 @@ public class CarroResource {
 
         List<Long> condIds = new ArrayList<Long>();
         carro.getCondPagto().forEach((cond) -> {
-            formaIds.add(cond.getId());
+            condIds.add(cond.getId());
         });
 
         List<Long> acessorioIds = new ArrayList<Long>();
         carro.getAcessorio().forEach((acessorio) -> {
-            formaIds.add(acessorio.getId());
+            acessorioIds.add(acessorio.getId());
         });
 
         return new CarroDTO(carro.getId(), carro.getModelo(), carro.getImagem(),

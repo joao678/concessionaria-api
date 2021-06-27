@@ -11,7 +11,7 @@ public class CarroDTO {
     public Double preco;
     public Long marca;
     public List<Long> formas;
-    public List<Long> conds;
+    public List<Long> condicoes;
     public List<Long> acessorios;    
 
     public CarroDTO(Long id, String modelo, String imagem, int ano, Double preco, Long marca, List<Long> formas, List<Long> conds, List<Long> acessorios) {
@@ -22,7 +22,7 @@ public class CarroDTO {
         this.preco = preco;
         this.marca = marca;
         this.formas = formas;
-        this.conds = conds;
+        this.condicoes = conds;
         this.acessorios = acessorios;
     }
 }
