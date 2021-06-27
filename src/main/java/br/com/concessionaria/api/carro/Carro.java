@@ -56,6 +56,14 @@ public class Carro implements Serializable {
             inverseForeignKey = @ForeignKey(name = "fk_forma")
     )
     private List<FormaPagto> formaPagto = new ArrayList<>();
+    public List<FormaPagto> getFormaPagto() {
+        return formaPagto;
+    }
+
+    public void setFormaPagto(List<FormaPagto> formaPagto) {
+        this.formaPagto = formaPagto;
+    }
+
     
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -66,7 +74,14 @@ public class Carro implements Serializable {
             inverseForeignKey = @ForeignKey(name = "fk_cond")
     )
     private List<CondPagto> condPagto = new ArrayList<>();
-    
+    public List<CondPagto> getCondPagto() {
+        return condPagto;
+    }
+
+    public void setCondPagto(List<CondPagto> condPagto) {
+        this.condPagto = condPagto;
+    }
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "acessorio_carros",
@@ -83,22 +98,6 @@ public class Carro implements Serializable {
 
     public void setAcessorio(List<Acessorio> acessorio) {
         this.acessorio = acessorio;
-    }
-
-    public List<FormaPagto> getFormaPagto() {
-        return formaPagto;
-    }
-
-    public void setFormaPagto(List<FormaPagto> formaPagto) {
-        this.formaPagto = formaPagto;
-    }
-
-    public List<CondPagto> getCondPagto() {
-        return condPagto;
-    }
-
-    public void setCondPagto(List<CondPagto> condPagto) {
-        this.condPagto = condPagto;
     }
 
     public String getPlaca() {
