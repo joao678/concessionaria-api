@@ -1,12 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package br.com.concessionaria.api.formaPagto;
+package br.com.concessionaria.api.condPagto;
 
-import br.com.concessionaria.api.formaPagto.FormaPagto;
-import java.io.IOException;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -19,54 +12,45 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.container.ContainerRequestContext;
-import javax.ws.rs.container.ContainerResponseContext;
-import javax.ws.rs.container.ContainerResponseFilter;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.ext.Provider;
 
-/**
- *
- * @author joao6
- */
-
-@Path("formasPagto")
+@Path("condPagtos")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 @Stateless
-public class FormaPagtoResource {
+public class CondPagtoResource {
+
     @PersistenceContext(unitName = "ConsessionariaPU")
-    private EntityManager entityManager; 
-    
+    private EntityManager entityManager;
+
     @GET
     @Path("{id}")
-    public FormaPagto getFormaPagto(@PathParam("id") Long id) {
-        return entityManager.find(FormaPagto.class, id);
+    public CondPagto getCondPagto(@PathParam("id") Long id) {
+        return entityManager.find(CondPagto.class, id);
     }
-    
+
     @POST
-    public FormaPagto addFormaPagto(FormaPagto formaPagto) {
+    public CondPagto addCondPagto(CondPagto formaPagto) {
         entityManager.persist(formaPagto);
         return formaPagto;
     }
-    
+
     @PUT
     @Path("{id}")
-    public FormaPagto updateFormaPagto(@PathParam("id") Long id, FormaPagto formaPagto) {
-       formaPagto.setId(id);
-       entityManager.merge(formaPagto);
-       return formaPagto;
+    public CondPagto updateCondPagto(@PathParam("id") Long id, CondPagto formaPagto) {
+        formaPagto.setId(id);
+        entityManager.merge(formaPagto);
+        return formaPagto;
     }
-    
-    @DELETE    
+
+    @DELETE
     @Path("{id}")
-    public void removeFormaPagto(@PathParam("id") Long id) {
-        entityManager.remove(getFormaPagto(id));
+    public void removeCondPagto(@PathParam("id") Long id) {
+        entityManager.remove(getCondPagto(id));
     }
-    
+
     @GET
-    public List<FormaPagto> getFormaPagtos() {
-       return entityManager.createQuery("SELECT l FROM FormaPagto l", FormaPagto.class).getResultList();
+    public List<CondPagto> getCondPagtos() {
+        return entityManager.createQuery("SELECT l FROM CondPagto l", CondPagto.class).getResultList();
     }
 }

@@ -1,12 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.com.concessionaria.api.carro;
 
+import br.com.concessionaria.api.acessorios.Acessorio;
+import br.com.concessionaria.api.condPagto.CondPagto;
 import br.com.concessionaria.api.formaPagto.FormaPagto;
 import br.com.concessionaria.api.marca.Marca;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -21,29 +19,23 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.OrderColumn;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
-/**
- *
- * @author joao6
- */
 @Entity
-@Table(name = "carro", schema="public")
-public class Carro {
+@Table(name = "carro", schema = "public")
+public class Carro implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
-    
+
     @Column(nullable = false)
     private String modelo;
     private int ano;
-    private int preco;
+    private Double preco;
     private String imagem;
-    
+    private String placa;
+
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     private Marca marca;
 
@@ -54,16 +46,44 @@ public class Carro {
     public void setMarca(Marca marca) {
         this.marca = marca;
     }
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "forma_carros",
+            joinColumns = @JoinColumn(name = "id_carro"),
+            inverseJoinColumns = @JoinColumn(name = "id_forma"),
+            foreignKey = @ForeignKey(name = "fk_carro"),
+            inverseForeignKey = @ForeignKey(name = "fk_forma")
+    )
+    private List<FormaPagto> formaPagto = new ArrayList<>();
     
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-        name = "forma_carros",
-        joinColumns = @JoinColumn(name = "id_carro"),
-        inverseJoinColumns = @JoinColumn(name = "id_forma"),
-        foreignKey = @ForeignKey(name = "fk_carro"),
-        inverseForeignKey = @ForeignKey(name = "fk_forma")
+            name = "cond_carros",
+            joinColumns = @JoinColumn(name = "id_carro"),
+            inverseJoinColumns = @JoinColumn(name = "id_cond"),
+            foreignKey = @ForeignKey(name = "fk_carro"),
+            inverseForeignKey = @ForeignKey(name = "fk_cond")
     )
-    private List<FormaPagto> formaPagto = new ArrayList<>();
+    private List<CondPagto> condPagto = new ArrayList<>();
+    
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "acessorio_carros",
+            joinColumns = @JoinColumn(name = "id_carro"),
+            inverseJoinColumns = @JoinColumn(name = "id_acessorio"),
+            foreignKey = @ForeignKey(name = "fk_carro"),
+            inverseForeignKey = @ForeignKey(name = "fk_acessorio")
+    )
+    private List<Acessorio> acessorio = new ArrayList<>();
+
+    public List<Acessorio> getAcessorio() {
+        return acessorio;
+    }
+
+    public void setAcessorio(List<Acessorio> acessorio) {
+        this.acessorio = acessorio;
+    }
 
     public List<FormaPagto> getFormaPagto() {
         return formaPagto;
@@ -71,6 +91,22 @@ public class Carro {
 
     public void setFormaPagto(List<FormaPagto> formaPagto) {
         this.formaPagto = formaPagto;
+    }
+
+    public List<CondPagto> getCondPagto() {
+        return condPagto;
+    }
+
+    public void setCondPagto(List<CondPagto> condPagto) {
+        this.condPagto = condPagto;
+    }
+
+    public String getPlaca() {
+        return placa;
+    }
+
+    public void setPlaca(String placa) {
+        this.placa = placa;
     }
 
     public String getImagem() {
@@ -89,11 +125,11 @@ public class Carro {
         this.ano = ano;
     }
 
-    public int getPreco() {
+    public Double getPreco() {
         return preco;
     }
 
-    public void setPreco(int preco) {
+    public void setPreco(Double preco) {
         this.preco = preco;
     }
 
