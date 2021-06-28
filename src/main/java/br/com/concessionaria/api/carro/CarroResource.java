@@ -46,7 +46,7 @@ public class CarroResource {
         });
 
         return new CarroDTO(carro.getId(), carro.getModelo(), carro.getImagem(),
-                carro.getAno(), carro.getPreco(), carro.getMarca().getId(),
+                carro.getAno(), carro.getPreco(), carro.getMarca().getId(), carro.getPlaca(),
                 formaIds, condIds, acessorioIds);
     }
 
@@ -95,7 +95,7 @@ public class CarroResource {
             });
 
             listaCarroDTO.add(new CarroDTO(carro.getId(), carro.getModelo(), carro.getImagem(),
-                    carro.getAno(), carro.getPreco(), carro.getMarca().getId(),
+                    carro.getAno(), carro.getPreco(), carro.getMarca().getId(), carro.getPlaca(),
                     formaIds, condIds, acessorioIds));
         });
         return listaCarroDTO;
