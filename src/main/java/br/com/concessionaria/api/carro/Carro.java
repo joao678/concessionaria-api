@@ -5,8 +5,8 @@ import br.com.concessionaria.api.condPagto.CondPagto;
 import br.com.concessionaria.api.formaPagto.FormaPagto;
 import br.com.concessionaria.api.marca.Marca;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -50,55 +50,58 @@ public class Carro implements Serializable {
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "forma_carros",
-            joinColumns = @JoinColumn(name = "id_carro"),
+            joinColumns = @JoinColumn(name = "id_carro_forma"),
             inverseJoinColumns = @JoinColumn(name = "id_forma"),
-            foreignKey = @ForeignKey(name = "fk_carro"),
+            foreignKey = @ForeignKey(name = "fk_carro_forma"),
             inverseForeignKey = @ForeignKey(name = "fk_forma")
     )
-    private List<FormaPagto> formaPagto = new ArrayList<>();
-    public List<FormaPagto> getFormaPagto() {
-        return formaPagto;
-    }
-
-    public void setFormaPagto(List<FormaPagto> formaPagto) {
-        this.formaPagto = formaPagto;
-    }
-
+    private Set<FormaPagto> formaPagto = new HashSet<FormaPagto>();
     
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "cond_carros",
-            joinColumns = @JoinColumn(name = "id_carro"),
+            joinColumns = @JoinColumn(name = "id_carro_cond"),
             inverseJoinColumns = @JoinColumn(name = "id_cond"),
-            foreignKey = @ForeignKey(name = "fk_carro"),
+            foreignKey = @ForeignKey(name = "fk_carro_cond"),
             inverseForeignKey = @ForeignKey(name = "fk_cond")
     )
-    private List<CondPagto> condPagto = new ArrayList<>();
-    public List<CondPagto> getCondPagto() {
-        return condPagto;
-    }
-
-    public void setCondPagto(List<CondPagto> condPagto) {
-        this.condPagto = condPagto;
-    }
-
+    private Set<CondPagto> condPagto = new HashSet<CondPagto>();
+    
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "acessorio_carros",
-            joinColumns = @JoinColumn(name = "id_carro"),
+            joinColumns = @JoinColumn(name = "id_carro_acessorio"),
             inverseJoinColumns = @JoinColumn(name = "id_acessorio"),
-            foreignKey = @ForeignKey(name = "fk_carro"),
+            foreignKey = @ForeignKey(name = "fk_carro_assesorio"),
             inverseForeignKey = @ForeignKey(name = "fk_acessorio")
     )
-    private List<Acessorio> acessorio = new ArrayList<>();
+    private Set<Acessorio> acessorio = new HashSet<Acessorio>();
 
-    public List<Acessorio> getAcessorio() {
+    public Set<FormaPagto> getFormaPagto() {
+        return formaPagto;
+    }
+
+    public void setFormaPagto(Set<FormaPagto> formaPagto) {
+        this.formaPagto = formaPagto;
+    }
+
+    public Set<CondPagto> getCondPagto() {
+        return condPagto;
+    }
+
+    public void setCondPagto(Set<CondPagto> condPagto) {
+        this.condPagto = condPagto;
+    }
+
+    public Set<Acessorio> getAcessorio() {
         return acessorio;
     }
 
-    public void setAcessorio(List<Acessorio> acessorio) {
+    public void setAcessorio(Set<Acessorio> acessorio) {
         this.acessorio = acessorio;
     }
+
+    
 
     public String getPlaca() {
         return placa;
