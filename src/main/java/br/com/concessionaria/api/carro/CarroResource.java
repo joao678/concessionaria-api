@@ -15,6 +15,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 @Path("carros")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -51,9 +52,16 @@ public class CarroResource {
     }
 
     @POST
-    public Carro addCarro(Carro carro) {
-        entityManager.persist(carro);
-        return carro;
+    public Response addCarro(Carro carro) {
+        try {
+            Carro carroPlaca = (Carro)entityManager.createQuery("SELECT c FROM Carro c WHERE c.placa = :placa").setParameter("placa", carro.getPlaca()).getSingleResult();    
+        } catch (Exception e) {
+            entityManager.persist(carro);
+            return Response.status(200).entity(carro).build();
+            
+        }
+        
+        return Response.status(403).entity("Não é possível cadastrar um carro com a mesma placa").build();
     }
 
     @PUT
